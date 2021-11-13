@@ -3,7 +3,7 @@ from .models import *
 from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework import status
-import PushNotification
+from .PushNotification import sendNotification
 
 
 class RefreshMovieList(APIView):
@@ -22,7 +22,10 @@ class RefreshMovieList(APIView):
             movie = Movie.objects.get(title=request.data['title'])
 
         if request.data['title'] != movie.title:
-            PushNotification()
+            sendNotification(request.data['title'],
+                             request.data['url'],
+                             request.data['image'])
+
             if serializer.is_valid():
                 serializer.save()
                 return Response(serializer.data, status=status.HTTP_201_CREATED)
