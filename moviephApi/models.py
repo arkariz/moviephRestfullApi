@@ -7,6 +7,12 @@ class Movie(models.Model):
     url = models.CharField(max_length=250)
     image = models.CharField(max_length=400)
 
+    def __str__(self):
+        return self.title
+
 
 class Token(models.Model):
     token = models.CharField(max_length=400)
+
+    def __str__(self):
+        return self.token
