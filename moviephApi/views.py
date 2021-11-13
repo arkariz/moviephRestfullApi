@@ -52,6 +52,11 @@ class GetThumbnailMovie(APIView):
 
 
 class GetToken(APIView):
+    def get(self, request):
+        token = Token.objects.all()
+        serializer = TokenSerializer(token, many=True)
+        return Response(serializer.data)
+
     def post(self, request):
         serializer = TokenSerializer(data=request.data)
 
