@@ -1,9 +1,10 @@
 from .models import Token
 from pyfcm import FCMNotification
+import os
 
 
 def sendNotification(title, url, image):
-    api_key = 'AAAAdo4nMxg:APA91bG2UeEvBgLPSuNQPq7FRNOoezcqwfgYdnnL9g7HpxUAfxI6DkQEdg9OkRQE-xB-zfyl8z9jSFjKDH4a6nnAek9A0KozJWoOs0yGJvOduxGNDZxL4jNKk-EdhXS5Mxr2uSKjmDTG'
+    api_key = os.environ.get("FCM_SECRET")
     tokens = []
     query_token = Token.objects.all()
     data_message = {
