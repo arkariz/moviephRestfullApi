@@ -4,6 +4,7 @@ import os
 from apscheduler.schedulers.background import BackgroundScheduler
 from bs4 import BeautifulSoup
 from selenium import webdriver
+from selenium.webdriver.common.by import By
 from .views import RefreshMovieList, GetNewestMovie
 
 
@@ -30,13 +31,18 @@ def getNewestMovie():
 
 def startSpider():
     driver = setDriver()
-    driver.get('https://pahe.ph/')  # Accessing Web
+    driver.get('https://103.194.171.205/')  # Accessing Web
+    driver.implicitly_wait(3)
+
+    add = driver.find_element(by=By.XPATH, value='//*[@id="baner_close"]')
+    add.click()
+
     html = driver.page_source  # Get HTML
     soup = BeautifulSoup(html, 'html.parser')
-    cat_box = soup.find("div", {"class": "cat-box-content"})
+    cat_box = soup.find("div", {"class": "row grid-container gmr-module-posts"})
 
     movie_container = []
-    for movie in reversed(cat_box.find_all('div', {'class': 'post-thumbnail'})):
+    for movie in reversed(cat_box.find_all('div', {'class': 'gmr-item-modulepost'})):
         movie_container.append(movie)
 
     if movie_container[-1].a['href'] == getNewestMovie():
@@ -44,12 +50,14 @@ def startSpider():
     else:
         items = []
         for movie in movie_container:
-            original_title = movie.a['original-title'].split("(", 1)
-            title = original_title[0]
+            original_title = movie.a['title'].split(":", 1)
+            title = original_title[1]
+            star = movie.find("div", {'class': 'gmr-rating-item'}).text
             item = {
                 'title': title,
                 'url': movie.a['href'],
-                'image': movie.img['src']
+                'image': movie.img['src'],
+                'star': star
             }
             print('added: ', item['title'])
 

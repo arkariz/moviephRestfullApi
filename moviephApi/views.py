@@ -24,7 +24,7 @@ class RefreshMovieList(APIView):
         if request['title'] != movie.title:
             sendNotification(request['title'],
                              request['url'],
-                             request['image'])
+                             request['image'],)
 
             if serializer.is_valid():
                 serializer.save()

@@ -11,7 +11,8 @@ class MovieSerializer(serializers.ModelSerializer):
         return Movie.objects.create(
             title=validated_data['title'],
             url=validated_data['url'],
-            image=validated_data['image']
+            image=validated_data['image'],
+            star=validated_data['star']
         )
 
 
