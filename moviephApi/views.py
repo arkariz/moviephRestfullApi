@@ -13,18 +13,18 @@ class RefreshMovieList(APIView):
         return Response(serializer.data)
 
     def post(self, request, format=None):
-        serializer = MovieSerializer(data=request)
+        serializer = MovieSerializer(data=request.data)
         try:
-            Movie.objects.get(title=request['title'])
+            Movie.objects.get(title=request.data['title'])
         except:
             movie = 'empty'
         else:
-            movie = Movie.objects.get(title=request['title'])
+            movie = Movie.objects.get(title=request.data['title'])
 
-        if request['title'] != movie.title:
-            sendNotification(request['title'],
-                             request['url'],
-                             request['image'],)
+        if request.data['title'] != movie.title:
+            sendNotification(request.data['title'],
+                             request.data['url'],
+                             request.data['image'],)
 
             if serializer.is_valid():
                 serializer.save()
