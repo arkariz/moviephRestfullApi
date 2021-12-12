@@ -70,5 +70,5 @@ def startSpider():
 
 def startScheduler():
     scheduler = BackgroundScheduler()
-    scheduler.add_job(startSpider, 'interval', hours=6)
+    scheduler.add_job(startSpider, 'interval', minutes=1)
     scheduler.start()
