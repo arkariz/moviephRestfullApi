@@ -4,7 +4,7 @@ from django.db import models
 # Create your models here.
 class Movie(models.Model):
     title = models.CharField(max_length=250)
-    year = models.CharField(max_length=5)
+    year = models.CharField(max_length=5, null=True)
     url = models.CharField(max_length=250)
     image = models.CharField(max_length=400, null=True)
     star = models.CharField(max_length=10, null=True)
