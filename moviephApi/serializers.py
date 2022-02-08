@@ -10,9 +10,14 @@ class MovieSerializer(serializers.ModelSerializer):
     def create(self, validated_data):
         return Movie.objects.create(
             title=validated_data['title'],
+            year=validated_data['year'],
             url=validated_data['url'],
             image=validated_data['image'],
-            star=validated_data['star']
+            star=validated_data['star'],
+            duration=validated_data['duration'],
+            genre=validated_data['genre'],
+            imdb=validated_data['imdb'],
+            video_url=validated_data['video_url']
         )
 
 
