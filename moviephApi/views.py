@@ -58,8 +58,6 @@ class GetToken(APIView):
         return Response(serializer.data)
 
     def post(self, request):
-        serializer = TokenSerializer(data=request.data)
-
         try:
             Token.objects.get(token=request.data['token'])
         except:
@@ -68,6 +66,7 @@ class GetToken(APIView):
             token = Token.objects.get(token=request.data['token'])
 
             if request.data['token'] != token.token:
+                serializer = TokenSerializer(data=request.data)
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
