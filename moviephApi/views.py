@@ -67,7 +67,7 @@ class GetToken(APIView):
         else:
             token = Token.objects.get(token=request.data['token'])
 
-            if request.data['token'] != token.title():
+            if request.data['token'] != token.token:
                 if serializer.is_valid():
                     serializer.save()
                     return Response(serializer.data, status=status.HTTP_201_CREATED)
