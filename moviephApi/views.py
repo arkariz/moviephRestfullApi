@@ -21,15 +21,15 @@ class RefreshMovieList(APIView):
         else:
             movie = Movie.objects.get(title=request.data['title'])
 
-            if request.data['title'] != movie.title:
-                sendNotification(request.data['title'],
-                                 request.data['url'],
-                                 request.data['image'],)
+        if request.data['title'] != movie.title:
+            sendNotification(request.data['title'],
+                             request.data['url'],
+                             request.data['image'],)
 
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
 class GetNewestMovie(APIView):
@@ -58,16 +58,17 @@ class GetToken(APIView):
         return Response(serializer.data)
 
     def post(self, request):
+        serializer = TokenSerializer(data=request.data)
+
         try:
             Token.objects.get(token=request.data['token'])
         except:
             token = 'empty'
         else:
-            token = Token.objects.get(token=request.data['token'])
+            token = Token.objects.get(title=request.data['token'])
 
-            if request.data['token'] != token.token:
-                serializer = TokenSerializer(data=request.data)
-                if serializer.is_valid():
-                    serializer.save()
-                    return Response(serializer.data, status=status.HTTP_201_CREATED)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+        if request.data['token'] != token.title:
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
